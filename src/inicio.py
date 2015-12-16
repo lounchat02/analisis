@@ -27,6 +27,10 @@ class Veneno(object):
         self.manifest = ET.parse('muestras/' + self.destino + '/AndroidManifest.xml')
         root = self.manifest.getroot()
         print root.tag
+        print len(root)
+        print root.get("manifest").get("package")
+        for attt,value in root.items():
+            print attt,value
 
 
 sample = Veneno(sys.argv[1], sys.argv[2])
