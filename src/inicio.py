@@ -11,6 +11,9 @@ class Veneno(object):
         self.hash_md5 = ""
         self.hash_sha256 = ""
         self.manifest = ""
+        self.bicho = {
+                'uses-permission': [],
+        }
 
     def estaticos(self):
         self.hash_sha256 = hashlib.sha256("muestras/" + self.origen).hexdigest()
@@ -26,14 +29,20 @@ class Veneno(object):
     def permisos(self):
         self.manifest = ET.parse('muestras/' + self.destino + '/AndroidManifest.xml')
         root = self.manifest.getroot()
-        print root.tag
-        print len(root)
-        print root.get("manifest").get("package")
-        for attt,value in root.items():
-            print attt,value
+        #print root.tag
+        for child in root.iter('uses-permission'):
+            print child.get('{http://schemas.android.com/apk/res/android}name')
+            self.bicho['uses-permission'].append(child.get('{http://schemas.android.com/apk/res/android}name'))
+
+        for permisos in self.bicho.get('uses-permission'):
+               print (permisos)
+
+
 
 
 sample = Veneno(sys.argv[1], sys.argv[2])
 #sample.desempaquetar()
 sample.estaticos()
 sample.permisos()
+
+
