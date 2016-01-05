@@ -20,9 +20,12 @@ class Veneno(object):
         self.destino = destino
         self.hash_md5 = ""
         self.hash_sha256 = ""
-        self.manifest = ""
-        self.bicho = None
-        self.nombre = None
+        self.permisos = None
+        self.nombre_paquete = None
+        self.activities = None
+        #self.manifest = None
+        self.receivers = None
+        self.services = None
 
     def estaticos(self):
         self.hash_sha256 = hashlib.sha256("muestras/" + self.origen).hexdigest()
@@ -33,14 +36,21 @@ class Veneno(object):
                  "muestras/" + self.origen
         destino = "muestras/" + self.destino
         a = APK(origen)
-        self.bicho = a.get_permissions()
-        self.nombre = a.get_package()
+        self.permisos = a.get_permissions()
+        self.nombre_paquete = a.get_package()
+        self.activities = a.get_activities()
+        self.receivers = a.get_receivers()
+        self.services = a.get_services()
+        #self.manifest = a.get_android_manifest_axml()
+        print (a.show())
+
+
     # Utiliza la libreria para desempaquetar y decodificar los apk
     def desempaquetar(self):
         codigo = "sh src/decompiler.sh d -f muestras/" + self.origen + " -o muestras/" + self.destino
         result = os.system(codigo)
 
-   # def permisos(self):
+    #def permisos(self):
         #for permisos in self.bicho:
         #       print (permisos)
         #print(self.nombre)
